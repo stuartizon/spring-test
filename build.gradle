@@ -14,8 +14,34 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            srcDir file('src/integration-test/java')
+        }
+    }
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    testImplementation 'junit:junit:4.12'
+    integrationTestImplementation 'io.rest-assured:rest-assured:3.3.0'
+}
+
+tasks.withType(Test) {
+    // By default no output is written for passing tests
+    testLogging.events = ['PASSED', 'FAILED']
+    // Stop gradle from caching the output of this phase - i.e. run it every time
+    outputs.upToDateWhen { false }
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
 }
