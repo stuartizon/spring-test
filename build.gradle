@@ -28,9 +28,14 @@ configurations {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     integrationTestImplementation 'io.rest-assured:rest-assured:3.3.0'
 }
 
